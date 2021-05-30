@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<robot name = "tacocat_chassis" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="chassis" params="">
+
+        <link name="base_footprint"/>
+
+        <joint name="base_footprint_to_base_link" type="fixed">
+            <parent link="base_footprint"/>
+            <child link="base_link"/>
+            <origin rpy="0 0 0" xyz="0 0 0.034"/>
+        </joint>
+
+        <link name="base_link">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${chassis_cm}"/>
+                <mass value="${chassis_mass}"/>
+                <inertia
+                    ixx="${chassis_Ixx}"
+                    ixy="${chassis_Ixy}"
+                    ixz="${chassis_Ixz}"
+                    iyy="${chassis_Iyy}"
+                    iyz="${chassis_Iyz}"
+                    izz="${chassis_Izz}"/>
+            </inertial>            
+            <visual>
+                <geometry>
+                    <mesh filename="package://tacocat_description/mesh/base_link.STL"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="-0.193 0 0.218" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.703 0.154 0.435"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_link_to_caster" type="fixed">
+            <parent link="base_link"/>
+            <child link="caster_wheel"/>
+            <origin rpy="0 0 0" xyz="-0.35 0 0"/>
+            </joint>
+
+        <link name="caster_wheel">
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0045 0 0.002"/>
+                <geometry>
+                    <sphere radius="0.035"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="caster_wheel">
+            <mu1>0</mu1>
+            <mu2>0</mu2>
+            <!-- <material>Gazebo/White</material> -->
+        </gazebo>
+
+        <gazebo reference="base_link">
+            <mu1>0.5</mu1>
+            <mu2>0.5</mu2>
+            <material>Gazebo/White</material>
+        </gazebo>
+
+    </xacro:macro>
+
+</robot>

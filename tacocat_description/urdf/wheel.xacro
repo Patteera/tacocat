@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<robot name="wheel" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find tacocat_description)/urdf/properties.xacro"/>
+
+    <xacro:macro name="wheel" params="name translation rotation parent rotate_wheel">
+
+        <link name="${name}_wheel">
+            <visual>
+            <origin rpy="${rotate_wheel} 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://tacocat_description/mesh/wheel.STL"/>
+                </geometry>
+            </visual>
+            <inertial>
+                <origin rpy="0 0 0" xyz="${wheel_cm}"/>
+                <mass value="${wheel_mass}"/>
+                <inertia
+                    ixx="${wheel_Ixx}"
+                    ixy="${wheel_Ixy}"
+                    ixz="${wheel_Ixz}"
+                    iyy="${wheel_Iyy}"
+                    iyz="${wheel_Iyz}"
+                    izz="${wheel_Izz}"/>
+            </inertial>
+            <collision>
+                <origin rpy="${Pi/2} 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder length="0.03" radius="${wheel_radius}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${name}_wheel_joint" type="continuous">
+            <origin xyz="${translation}" rpy="${rotation}"/>
+            <parent link="${parent}"/>
+            <child link="${name}_wheel"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="${wheel_effort}" velocity="${wheel_velocity}"/>
+            <dynamics damping="${wheel_joint_damp}"/>
+        </joint>
+
+        <gazebo>
+            <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+                <robotNamespace>tacocat</robotNamespace>
+            </plugin>
+        </gazebo>
+
+        <gazebo reference="${name}_wheel">
+            <mu1>1</mu1>
+            <mu2>1</mu2>
+            <material>Gazebo/Blue</material>
+        </gazebo>
+
+        <transmission name="${name}_wheel_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_wheel_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_wheel_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+    </xacro:macro>
+
+
+
+</robot>
