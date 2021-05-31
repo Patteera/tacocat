@@ -6,10 +6,13 @@
     <xacro:include filename="$(find tacocat_description)/urdf/chassis.xacro"/>
     <xacro:include filename="$(find tacocat_description)/urdf/wheel.xacro"/>
     <xacro:include filename="$(find tacocat_description)/urdf/camera.xacro"/>
+    <xacro:include filename="$(find tacocat_description)/urdf/laser.xacro"/>
 
     <xacro:chassis/>
 
-    <xacro:camera/>
+    <xacro:tacocam/>
+
+    <xacro:laser/>
 
     <xacro:wheel 
         name="left" 

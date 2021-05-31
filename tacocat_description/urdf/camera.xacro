@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <robot name = "tacocat_camera" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="camera" params="">
+    <xacro:macro name="tacocam" params="">
 
         <link name="camera_link">
             <visual>
@@ -19,19 +19,20 @@
             <child link="camera_link"/>
         </joint>
 
-            <!-- camera -->
-    <gazebo reference="camera_link">
-        <sensor type="camera" name="camera1">
-            <update_rate>30.0</update_rate>
+    <!-- camera -->
+        <gazebo reference="camera_link">
+            <material>Gazebo/Black</material>
+            <sensor type="camera" name="camera1">
+            <update_rate>60.0</update_rate>
             <camera name="head">
-                <horizontal_fov>1.3962634</horizontal_fov>
+                <horizontal_fov>1.5708</horizontal_fov>
                 <image>
-                    <width>800</width>
-                    <height>800</height>
+                    <width>2560</width>
+                    <height>720</height>
                     <format>R8G8B8</format>
                 </image>
                 <clip>
-                    <near>0.02</near>
+                    <near>0.035</near>
                     <far>300</far>
                 </clip>
                 <noise>
@@ -46,8 +47,8 @@
             <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
                 <alwaysOn>true</alwaysOn>
                 <updateRate>0.0</updateRate>
-                <cameraName>tacocat/camera1</cameraName>
-                <imageTopicName>image_raw</imageTopicName>
+                <cameraName>tacocat/tacocam</cameraName>
+                <imageTopicName>image</imageTopicName>
                 <cameraInfoTopicName>camera_info</cameraInfoTopicName>
                 <frameName>camera_link</frameName>
                 <hackBaseline>0.07</hackBaseline>
@@ -57,7 +58,8 @@
                 <distortionT1>0.0</distortionT1>
                 <distortionT2>0.0</distortionT2>
             </plugin>
-        </sensor>
-    </gazebo>
+            </sensor>
+        </gazebo>
+
     </xacro:macro>
 </robot>
